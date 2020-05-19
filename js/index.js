@@ -1,5 +1,5 @@
-const worker = new Worker('js/worker.js')
-worker.onmessage = onWorkerMessage
+const $ = document.querySelector.bind(document)
+const $$ = document.querySelectorAll.bind(document)
 
 const ctx = new AudioContext({
   latencyHint: 'playback'
@@ -7,8 +7,13 @@ const ctx = new AudioContext({
 ctx.suspend()
 
 initWorklet()
+document.addEventListener('DOMContentLoaded', initDom)
 
 async function initWorklet() {
+  console.log('initWorklet()')
+  const worker = new Worker('js/worker.js')
+  worker.onmessage = onWorkerMessage
+
   await ctx.audioWorklet.addModule('js/worklet.js')
   const workletNode = new AudioWorkletNode(ctx, 'worklet', {
     outputChannelCount: [2]
@@ -18,18 +23,18 @@ async function initWorklet() {
   worker.postMessage({ port }, [port])
 }
 
-function pause() {
-  ctx.suspend()
-}
-
-function play() {
-  ctx.resume()
+function initDom() {
+  console.log('initDom()')
+  $('#play').onclick = () => ctx.resume()
+  $('#pause').onclick = () => ctx.suspend()
+  $('#reset').onclick = () => document.location.reload()
 }
 
 function onWorkerMessage({ data }) {
   const { status } = data
   if (status === 'ready') {
-    document.querySelectorAll('button[disabled]').forEach(el => el.disabled = false)
-    document.querySelector('#status').innerText = ''
+    console.log('ready')
+    $$('button[disabled]').forEach(el => el.disabled = false)
+    $('#status').innerText = ''
   }
 }

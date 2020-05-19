@@ -1,13 +1,13 @@
 <html>
   <head>
     <title>Audio Worklet</title>
-    <script async src="js/index.js"></script>
+    <script type="module" src="js/index.js"></script>
     <link rel="stylesheet" href="css/app.css" />
   </head>
   <body>
-    <button disabled onclick="play()">Play</button>
-    <button disabled onclick="pause()">Pause</button>
-    <button onclick="window.location.reload()">Reload</button>
+    <button disabled id="play">Play</button>
+    <button disabled id="pause">Pause</button>
+    <button id="reset">Reload</button>
     <div id="status">Loading...</div>
   </body>
 </html>
