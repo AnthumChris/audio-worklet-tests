@@ -36,9 +36,16 @@ function initDom() {
 
 function onWorkerMessage({ data }) {
   const { status } = data
+  const elButtons = $$('#play, #pause')
+  const elStatus = $('#status')
+
   if (status === 'ready') {
     console.log('ready')
-    $$('button[disabled]').forEach(el => el.disabled = false)
-    $('#status').innerText = ''
+    elButtons.forEach(el => el.disabled = false)
+    elStatus.innerText = 'Audio Ready'
+  } else if (status === 'ended') {
+    console.log('ended')
+    elButtons.forEach(el => el.disabled = true)
+    elStatus.innerText = 'AudioWorklet Ended'
   }
 }

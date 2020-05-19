@@ -20,9 +20,24 @@ async function initWorkletPort({ port }) {
 
     status('ready')
     workletPort.postMessage({ leftBuffer, rightBuffer }, [leftBuffer, rightBuffer])
+    workletPort.addEventListener('message', onWorkletMessage)
+
+    // required for addEventListener
+    // see https://developer.mozilla.org/en-US/docs/Web/API/MessagePort/start
+    workletPort.start()
+
+    return true
   }
+
+  return false
+}
+
+function onWorkletMessage(e) {
+  status(e.data.status)
 }
 
 function status(status) {
-  self.postMessage({ status })
+  if (status) {
+    self.postMessage({ status })
+  }
 }

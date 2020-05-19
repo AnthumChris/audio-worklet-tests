@@ -11,7 +11,7 @@ class MyWorklet extends AudioWorkletProcessor {
 
   process(inputs, outputs) {
     if (!this._samples.outputStereo(outputs[0])) {
-      console.log('AudioWorklet ended')
+      this.port.postMessage({ status: 'ended' })
       return false
     }
 

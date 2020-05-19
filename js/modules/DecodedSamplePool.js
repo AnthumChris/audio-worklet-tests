@@ -9,10 +9,7 @@ export class DecodedSamplePool {
   constructor(port) {
     this._port = port
 
-    this._port.addEventListener('message', this.onWorkerMessage.bind(this))
-    
-    // required for addEventListener
-    // see https://developer.mozilla.org/en-US/docs/Web/API/MessagePort/start
+    this._port.addEventListener('message', this.onWorkerMessage.bind(this))    
     port.start()
   }
 
