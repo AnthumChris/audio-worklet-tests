@@ -1,0 +1,21 @@
+body {
+  font-family: arial, sans-serif;
+}
+button {
+  font-size: 22px;
+  border: none;
+  background: #4c8bf5;
+  color: #fff;
+  padding: 1em;
+  cursor: pointer;
+}
+button[disabled] {
+  color: #000;
+  background: #ccc;
+  opacity: .6;
+  cursor: default;
+}
+
+#status {
+  padding: 1em;
+}
