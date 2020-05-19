@@ -1,6 +1,3 @@
-const $ = document.querySelector.bind(document)
-const $$ = document.querySelectorAll.bind(document)
-
 const worker = new Worker('js/worker.js')
 worker.onmessage = onWorkerMessage
 
@@ -14,7 +11,7 @@ initWorklet()
 async function initWorklet() {
   await ctx.audioWorklet.addModule('js/worklet.js')
   const workletNode = new AudioWorkletNode(ctx, 'worklet', {
-    outputChannelCount: [1]
+    outputChannelCount: [2]
   })
   workletNode.connect(ctx.destination)
   const { port } = workletNode 

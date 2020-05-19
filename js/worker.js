@@ -12,12 +12,14 @@ async function initWorkletPort({ port }) {
   if (!workletPort && port) {
     workletPort = port
   
-    // process mono channel for now
-    const pcmBuffer = await fetch('/audio/decoded-left.raw').then(r => r.arrayBuffer())
-    // const pcmBuffer = await fetch('audio/decoded-stereo.raw').then(r => r.arrayBuffer())
+    // process left/right channels in stereo
+    const [leftBuffer, rightBuffer] = await Promise.all([
+      fetch('/audio/decoded-left.raw').then(r => r.arrayBuffer()),
+      fetch('/audio/decoded-right.raw').then(r => r.arrayBuffer())
+    ])
 
     status('ready')
-    workletPort.postMessage({ pcmBuffer }, [pcmBuffer])
+    workletPort.postMessage({ leftBuffer, rightBuffer }, [leftBuffer, rightBuffer])
   }
 }
 
