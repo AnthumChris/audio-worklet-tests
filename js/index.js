@@ -11,15 +11,19 @@ document.addEventListener('DOMContentLoaded', initDom)
 
 async function initWorklet() {
   console.log('initWorklet()')
+
   const worker = new Worker('js/worker.js')
   worker.onmessage = onWorkerMessage
 
   await ctx.audioWorklet.addModule('js/worklet.js')
   const workletNode = new AudioWorkletNode(ctx, 'worklet', {
-    outputChannelCount: [2]
+    outputChannelCount: [2]  // stereo
   })
   workletNode.connect(ctx.destination)
-  const { port } = workletNode 
+
+  // Worklet cannot directly create/use a Worker.
+  // Instead, transfer worklet's port to Worker
+  const { port } = workletNode
   worker.postMessage({ port }, [port])
 }
 

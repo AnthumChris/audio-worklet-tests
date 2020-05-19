@@ -1,46 +1,21 @@
-// This worklet receives bytes from Worker and plays audio
+// This worklet receives decoded PCM from Worker and plays audio
+import { DecodedSamplePool } from './modules/DecodedSamplePool.js'
 
 class MyWorklet extends AudioWorkletProcessor {
-  _inputSamples = null  // left/right PCM samples to read from
-  _inputSampleIdx = 0   // read index/offset
+  _samples  // DecodedSamplePool from Worker
 
   constructor() {
     super()
-    this.port.onmessage = this.onMessage.bind(this)
-  }
-
-  onMessage(e) {
-    const { leftBuffer, rightBuffer } = e.data;
-    if (!this._inputSamples && leftBuffer && rightBuffer) {
-      this._inputSamples = {
-        left: new Float32Array(leftBuffer),
-        right: new Float32Array(rightBuffer)
-      }
-    }
+    this._samples = new DecodedSamplePool(this.port)
   }
 
   process(inputs, outputs) {
-    if (this._inputSamples) {
-      return this.setOutputSamples(outputs[0])
-    } else {
-      return true;
-    }
-  }
-
-  setOutputSamples([outLeft, outRight]) {
-    const startIdx = this._inputSampleIdx
-    const endIdx = Math.min(startIdx+outLeft.length, this._inputSamples.left.length)
-    const totalSamplesOut = endIdx - startIdx
-    this._inputSampleIdx+= totalSamplesOut
-
-    if (totalSamplesOut > 0) {
-      outLeft.set(this._inputSamples.left.subarray(startIdx, endIdx))
-      outRight.set(this._inputSamples.right.subarray(startIdx, endIdx))
-      return true
-    } else {
-      console.log('finished')
+    if (!this._samples.outputStereo(outputs[0])) {
+      console.log('AudioWorklet ended')
       return false
     }
+
+    return true
   }
 }
 
