@@ -4,10 +4,10 @@ export class MockAudioSource {
 
   constructor({ onReady }) {
     this.ready = Promise.all([
-      fetch('/audio/decoded-left.raw').then(r => {
+      fetch('../audio/decoded-left.raw').then(r => {
         return r.arrayBuffer().then(buffer => new Float32Array(buffer))
       }),
-      fetch('/audio/decoded-right.raw').then(r => {
+      fetch('../audio/decoded-right.raw').then(r => {
         return r.arrayBuffer().then(buffer => new Float32Array(buffer))
       }),
     ])

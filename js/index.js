@@ -4,7 +4,7 @@ const $$ = document.querySelectorAll.bind(document)
 const ctx = new AudioContext({
   latencyHint: 'playback'
 })
-// ctx.suspend()
+ctx.suspend()
 
 initWorklet()
 document.addEventListener('DOMContentLoaded', initDom)
