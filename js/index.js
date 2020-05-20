@@ -4,7 +4,7 @@ const $$ = document.querySelectorAll.bind(document)
 const ctx = new AudioContext({
   latencyHint: 'playback'
 })
-ctx.suspend()
+// ctx.suspend()
 
 initWorklet()
 document.addEventListener('DOMContentLoaded', initDom)
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', initDom)
 async function initWorklet() {
   console.log('initWorklet()')
 
-  const worker = new Worker('js/worker.js')
+  const worker = new Worker('js/worker.js', { type: 'module' })
   worker.onmessage = onWorkerMessage
 
   await ctx.audioWorklet.addModule('js/worklet.js')
