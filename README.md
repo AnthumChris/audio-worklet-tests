@@ -1,7 +1,9 @@
 
 # Run
 
-Deployed at https://dev.anthum.com/audio-worklet/
+Works in Chrome only (`SharedArrayBuffer` dependency).
+
+https://dev.anthum.com/audio-worklet/
 
 ```bash
 $ python3 -m http.server
