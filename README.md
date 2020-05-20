@@ -1,3 +1,4 @@
+_Informal testing and experiments with AudioWorklet.  You could abstract uses from the code and design patterns, but there's no official module or release provided for production use_
 
 # Run
 
